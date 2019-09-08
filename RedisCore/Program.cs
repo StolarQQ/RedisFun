@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -41,7 +42,9 @@ namespace RedisCore
         public Redis()
         {
             // Connect to docker container - default machine win 7 
-            var redis = ConnectionMultiplexer.Connect("192.168.99.100");
+
+            var test = ConfigurationManager.AppSettings["redisDB"];
+            var redis = ConnectionMultiplexer.Connect(test);
             _database = redis.GetDatabase();
         }
 
