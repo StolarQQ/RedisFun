@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace RedisCore
@@ -10,10 +11,19 @@ namespace RedisCore
         {
             var redisService = new Redis();
             await redisService.SetCache("name", "Andrew");
-
             var data = await redisService.GetCache("name");
-
             Console.WriteLine($"Fetching data from redis cache '{data}'.");
+
+            // Work with objects .NET
+
+            var employee = new Employee("1", "Micheal", 25);
+            await redisService.SetCache("Employee1", JsonConvert.SerializeObject(employee));
+            var employeeFromCache = JsonConvert.DeserializeObject<Employee>(await redisService.GetCache("Employee1"));
+
+            Console.WriteLine(employeeFromCache.Id);
+            Console.WriteLine(employeeFromCache.Name);
+            Console.WriteLine(employeeFromCache.Age);
+
             Console.ReadKey();
         }
     }
