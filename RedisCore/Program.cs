@@ -10,6 +10,7 @@ namespace RedisCore
     {
         static async Task Main(string[] args)
         {
+
             var redisService = new Redis();
             await redisService.SetCache("name", "Andrew");
             var data = await redisService.GetCache("name");
@@ -43,8 +44,8 @@ namespace RedisCore
         {
             // Connect to docker container - default machine win 7 
 
-            var test = ConfigurationManager.AppSettings["redisDB"];
-            var redis = ConnectionMultiplexer.Connect(test);
+            var config = ConfigurationManager.AppSettings["redisDB"];
+            var redis = ConnectionMultiplexer.Connect(config);
             _database = redis.GetDatabase();
         }
 
