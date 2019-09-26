@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisCore", "RedisCore\Redi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangfireFun", "HangfireFun\HangfireFun.csproj", "{50AEF771-4F83-4359-95A0-00BC2057F90F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangfireScheudler", "HangfireScheudler\HangfireScheudler.csproj", "{B994639A-439C-4F90-927D-5C9BEE107A99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{50AEF771-4F83-4359-95A0-00BC2057F90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50AEF771-4F83-4359-95A0-00BC2057F90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50AEF771-4F83-4359-95A0-00BC2057F90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B994639A-439C-4F90-927D-5C9BEE107A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B994639A-439C-4F90-927D-5C9BEE107A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B994639A-439C-4F90-927D-5C9BEE107A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B994639A-439C-4F90-927D-5C9BEE107A99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
