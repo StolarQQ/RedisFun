@@ -42,7 +42,8 @@ namespace RedisCore
             File.WriteAllBytes("C:\\Users\\Lyns\\Desktop\\Stolar.pdf", resultPdf);
 
 
-            File.WriteAllBytes($"{desktopPath}/Rafał.pdf", pdf);
+            var randombytePdf = new byte[1];
+            File.WriteAllBytes($"{desktopPath}/Rafał.pdf", randombytePdf);
             File.ReadAllBytes("");
 
 
