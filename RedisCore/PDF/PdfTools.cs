@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
@@ -9,7 +12,7 @@ using PdfReader = PdfSharp.Pdf.IO.PdfReader;
 
 namespace RedisCore.PDF
 {
-    public class PdfSharper
+    public class PdfTools : IPdf
     {
         public void MergePdfs(string[] inputs)
         {
@@ -74,16 +77,33 @@ namespace RedisCore.PDF
             return new byte[1];
         }
 
-        public bool IsPdf(byte[] inputs)
+        public bool IsPdf(string path)
         {
-            throw new NotImplementedException();
+            var pdfString = "%PDF-";
+            var pdfBytes = Encoding.ASCII.GetBytes(pdfString);
+            var len = pdfBytes.Length;
+            var buf = new byte[len];
+            var remaining = len;
+            var pos = 0;
+
+            using (var f = File.OpenRead(path))
+            {
+                while (remaining > 0)
+                {
+                    var amtRead = f.Read(buf, pos, remaining);
+                    if (amtRead == 0) return false;
+                    remaining -= amtRead;
+                    pos += amtRead;
+                }
+            }
+            return pdfBytes.SequenceEqual(buf);
         }
     }
 
     public interface IPdf
     {
-        byte[] MergePdfs(byte[] inputs);
-        //byte[] CreatePdf(byte inputs);
-        //bool IsPdf(byte[] inputs);
+        void MergePdfs(string[] inputs);
+        byte[] CreatePdf(byte inputs);
+        bool IsPdf(string path);
     }
 }
