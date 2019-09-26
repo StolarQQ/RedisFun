@@ -12,7 +12,7 @@ using PdfReader = PdfSharp.Pdf.IO.PdfReader;
 
 namespace RedisCore.PDF
 {
-    public class PdfSharper : IPdf
+    public class PdfTools : IPdf
     {
         public void MergePdfs(string[] inputs)
         {
