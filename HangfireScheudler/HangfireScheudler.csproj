@@ -198,6 +198,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExcelPlayGround\ExcelPlayGround.csproj">
+      <Project>{9ed5aa21-9ad3-40c5-a166-fc075dcc0ec9}</Project>
+      <Name>ExcelPlayGround</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HangfireFun\HangfireFun.csproj">
       <Project>{50aef771-4f83-4359-95a0-00bc2057f90f}</Project>
       <Name>HangfireFun</Name>
