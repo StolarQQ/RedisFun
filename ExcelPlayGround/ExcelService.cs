@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Resources;
+using FileStorage.Properties;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -21,7 +24,6 @@ namespace ExcelPlayGround
             // 
             var calculationSheet = wb.CreateSheet("Kalkulacja");
             var scheduleSheet = wb.CreateSheet("Harmonogram");
-
 
             // 
             calculationSheet.CreateRow(6).CreateCell(4).SetCellValue("Kalkulacja");
@@ -51,20 +53,28 @@ namespace ExcelPlayGround
 
             var printSetup = calculationSheet.PrintSetup;
             printSetup.Landscape = true;
-
-
+            
             calculationSheet.Autobreaks = true;
             printSetup.FitHeight = 1;
             printSetup.FitWidth = 1;
 
-            //IRow headerRow = calculationSheet.CreateRow(0);
-            //headerRow.HeightInPoints = 12.75f;
+            IRow headerRow = calculationSheet.CreateRow(0);
+            headerRow.HeightInPoints = 12.75f;
 
-            // Write excel file
+            //Write excel file
+            
             SaveWorkbookToFile("businessplan.xls", wb);
             EditExistXlsFromFile("businessplan.xls");
             OveerideExistDataInXlsFile("businessplan.xls");
+            
+            var xlsBusinessPlan = Resources.businessplan;
+            EditExistResourcesXls(xlsBusinessPlan);
 
+            var xlsBusinessPlanTest = Resources.ResourceManager.GetObject("businessplan");
+
+            //TODO 
+            //var resourceManager = new ResourceManager("ExcelPlayGround.Resources", Assembly.Load("FileStorage"));
+            //var translatedString = resourceManager.GetObject("businessplan");
 
             // Exit helper
             ProcessHelper("businessplan.xls", "EXCEL");
@@ -86,12 +96,29 @@ namespace ExcelPlayGround
             throw new NotImplementedException();
         }
 
+        public void EditExistResourcesXls(byte[] xlsFile)
+        {
+            HSSFWorkbook xlsDocument;
+            
+            using (var stream = new MemoryStream(xlsFile))
+            {
+                xlsDocument = new HSSFWorkbook(stream);
+            }
+            
+            var randomSheet = xlsDocument.CreateSheet("Arkusz-3");
+            randomSheet.CreateRow(1).CreateCell(1).SetCellValue("Test123");
+
+            SaveWorkbookToFile("businessplan.xls", xlsDocument);
+
+        }
+
         public void EditExistXlsFromFile(string filePath)
         {
             HSSFWorkbook xlsDocument;
 
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             xlsDocument = new HSSFWorkbook(stream);
+            
             
             var randomSheet = xlsDocument.CreateSheet("Arkusz-1");
             randomSheet.CreateRow(1).CreateCell(1).SetCellValue("Test123");
