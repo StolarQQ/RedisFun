@@ -69,11 +69,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\FileStorage\FileStorage.csproj">
+    <ProjectReference Condition=" '$(Configuration)' == 'Debug'" Include="..\FileStorage\FileStorage.csproj">
       <Project>{bc3d5c94-c9a1-43c2-a1b9-0270d81a40de}</Project>
       <Name>FileStorage</Name>
     </ProjectReference>
   </ItemGroup>
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
