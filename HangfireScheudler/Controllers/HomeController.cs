@@ -63,7 +63,5 @@ namespace HangfireScheudler.Controllers
 
             return View("Index");
         }
-
-
     }
 }

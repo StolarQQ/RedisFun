@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -105,10 +106,9 @@ namespace RedisCore
 
             var options = new ConfigurationOptions
             {
-                EndPoints = { "host:port" },
+                EndPoints = { "ip:6379" },
                 Password = "password",
-                Ssl = true,
-                //SslHost = "46.101.142.33",
+                Ssl = Convert.ToBoolean(ConfigManager.GetAppSettings("isSSL"))
             };
 
             options.CertificateSelection += OptionsOnCertificateSelection;
@@ -117,9 +117,11 @@ namespace RedisCore
             _database = redis.GetDatabase();
         }
 
-        private static X509Certificate OptionsOnCertificateSelection(object s, string t, X509CertificateCollection local, X509Certificate remote, string[] a)
+        private static X509Certificate OptionsOnCertificateSelection(object s, string t,
+            X509CertificateCollection local, X509Certificate remote, string[] a)
         {
-            return new X509Certificate2(@"C:\certpath.crt");
+            var certPath= ConfigManager.GetAppSettings("certRoute");
+            return new X509Certificate2(certPath);
         }
 
         public async Task<string> GetCache(string key)
@@ -128,5 +130,47 @@ namespace RedisCore
         public async Task SetCache(string key, string value)
             => await _database.StringSetAsync(key, value);
 
+    }
+
+    public static class ConfigManager
+    {
+        public static string GetAppSettings(string keyValue) => ConfigurationManager.AppSettings[keyValue];
+
+        public static string GetCustomSection(string section)
+        {
+            var collection = (NameValueCollection)ConfigurationManager.GetSection("section");
+            var value = collection["sectionName"];
+            return value;
+        }
+
+        internal static byte[] ReadFile(string fileName)
+        {
+            using (var f = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                var size = (int)f.Length;
+                byte[] data = new byte[size];
+                size = f.Read(data, 0, size);
+                f.Close();
+                return data;
+            }
+        }
+    }
+
+    public class CertUtils
+    {
+        public void CertX609()
+        {
+            var chain = new X509Chain
+            {
+                ChainPolicy =
+                {
+                    RevocationMode = X509RevocationMode.NoCheck,
+                    RevocationFlag = X509RevocationFlag.ExcludeRoot,
+                    VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority,
+                    VerificationTime = DateTime.Now,
+                    UrlRetrievalTimeout = new TimeSpan(0, 0, 0)
+                }
+            };
+        }
     }
 }
