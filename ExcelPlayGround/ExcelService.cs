@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Resources;
-using FileStorage.Properties;
+//using System.Resources;
+//using FileStorage.Properties;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -53,7 +54,7 @@ namespace ExcelPlayGround
 
             var printSetup = calculationSheet.PrintSetup;
             printSetup.Landscape = true;
-            
+
             calculationSheet.Autobreaks = true;
             printSetup.FitHeight = 1;
             printSetup.FitWidth = 1;
@@ -62,19 +63,47 @@ namespace ExcelPlayGround
             headerRow.HeightInPoints = 12.75f;
 
             //Write excel file
-            
+
             SaveWorkbookToFile("businessplan.xls", wb);
             EditExistXlsFromFile("businessplan.xls");
             OveerideExistDataInXlsFile("businessplan.xls");
-            
-            var xlsBusinessPlan = Resources.businessplan;
-            EditExistResourcesXls(xlsBusinessPlan);
 
-            var xlsBusinessPlanTest = Resources.ResourceManager.GetObject("businessplan");
+            #region ResourcesFun
 
-            //TODO 
-            //var resourceManager = new ResourceManager("ExcelPlayGround.Resources", Assembly.Load("FileStorage"));
-            //var translatedString = resourceManager.GetObject("businessplan");
+            //var xlsBusinessPlanTest = Resources.ResourceManager.GetObject("businessplan");
+            //var rm = new ResourceManager("businessplan", Assembly.Load("FileStorage"));
+
+            //var xlsBusinessPlan = Resources.businessplan;
+            //EditExistResourcesXls(xlsBusinessPlan);
+
+            var resourcesPath = "FileStorage.Resources.businessplan.xls";
+            var assembly = "FileStorage";
+
+
+#if (DEBUG)
+
+            HSSFWorkbook easyMoney;
+            using (var stream = Assembly.Load(assembly).GetManifestResourceStream(resourcesPath))
+            {
+                var memoryStream = new MemoryStream();
+                stream?.CopyTo(memoryStream);
+
+                easyMoney = new HSSFWorkbook(memoryStream);
+            }
+
+            SaveWorkbookToFile("EasydsdXD.xls", easyMoney);
+
+            string[] resNames2 = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            foreach (string resName in resNames2)
+                Console.WriteLine(resName);
+
+            string[] resNames = Assembly.Load("FileStorage").GetManifestResourceNames();
+            foreach (string resName in resNames)
+                Console.WriteLine(resName);
+
+#endif
+            #endregion
+
 
             // Exit helper
             ProcessHelper("businessplan.xls", "EXCEL");
@@ -99,12 +128,12 @@ namespace ExcelPlayGround
         public void EditExistResourcesXls(byte[] xlsFile)
         {
             HSSFWorkbook xlsDocument;
-            
+
             using (var stream = new MemoryStream(xlsFile))
             {
                 xlsDocument = new HSSFWorkbook(stream);
             }
-            
+
             var randomSheet = xlsDocument.CreateSheet("Arkusz-3");
             randomSheet.CreateRow(1).CreateCell(1).SetCellValue("Test123");
 
@@ -118,11 +147,11 @@ namespace ExcelPlayGround
 
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             xlsDocument = new HSSFWorkbook(stream);
-            
-            
+
+
             var randomSheet = xlsDocument.CreateSheet("Arkusz-1");
             randomSheet.CreateRow(1).CreateCell(1).SetCellValue("Test123");
-            
+
             SaveWorkbookToFile("businessplan.xls", xlsDocument);
 
         }
@@ -176,6 +205,17 @@ namespace ExcelPlayGround
         public void Experiment()
         {
             //Test commit
+        }
+
+        public static string GetEmbeddedResourceContent(string resourceName)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            Stream stream = asm.GetManifestResourceStream(resourceName);
+            StreamReader source = new StreamReader(stream);
+            string fileContent = source.ReadToEnd();
+            source.Dispose();
+            stream.Dispose();
+            return fileContent;
         }
     }
 }

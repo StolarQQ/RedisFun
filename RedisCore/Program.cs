@@ -17,52 +17,52 @@ namespace RedisCore
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            await RedisInit();
+            //await RedisInit();
 
-            #region PDF
+            //#region PDF
 
-            var bytePdf = new byte[1];
-            var inStream = new MemoryStream(bytePdf);
-            File.WriteAllBytes("C:\\Users\\Lyns\\Desktop\\Test123.pdf", bytePdf);
-
-
-            // Simple check if file is pdf
-            var pdfTool = new PdfTools();
-            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            Console.WriteLine(pdfTool.IsPdf($"{desktopPath}/Test123.pdf"));
+            //var bytePdf = new byte[1];
+            //var inStream = new MemoryStream(bytePdf);
+            //File.WriteAllBytes("C:\\Users\\Lyns\\Desktop\\Test123.pdf", bytePdf);
 
 
-            // Create blank pdf
-            var stream = new MemoryStream();
-            var pdf = new PdfDocument();
-            var page = pdf.AddPage();
-            pdf.Save(stream, false);
-            pdf.Close();
-            var resultPdf = stream.ToArray();
-
-            // Write pdf
-            File.WriteAllBytes("C:\\Users\\Lyns\\Desktop\\Stolar.pdf", resultPdf);
+            //// Simple check if file is pdf
+            //var pdfTool = new PdfTools();
+            //var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //Console.WriteLine(pdfTool.IsPdf($"{desktopPath}/Test123.pdf"));
 
 
-            var randombytePdf = new byte[1];
-            File.WriteAllBytes($"{desktopPath}/Rafał.pdf", randombytePdf);
-            File.ReadAllBytes("");
+            //// Create blank pdf
+            //var stream = new MemoryStream();
+            //var pdf = new PdfDocument();
+            //var page = pdf.AddPage();
+            //pdf.Save(stream, false);
+            //pdf.Close();
+            //var resultPdf = stream.ToArray();
+
+            //// Write pdf
+            //File.WriteAllBytes("C:\\Users\\Lyns\\Desktop\\Stolar.pdf", resultPdf);
 
 
-            var pdfTools = new PdfTools();
-            pdfTools.MergePdfs(new[]
-            {
-                $"{desktopPath}/xD.pdf",
-                $"{desktopPath}/ReSharper_DefaultKeymap_VSscheme.pdf"
+            //var randombytePdf = new byte[1];
+            //File.WriteAllBytes($"{desktopPath}/Rafał.pdf", randombytePdf);
+            //File.ReadAllBytes("");
 
-            });
 
-            var fs = new FileStream($"{desktopPath}/xD1.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
-            var openpdf = PdfReader.Open(inStream, PdfDocumentOpenMode.Import);
+            //var pdfTools = new PdfTools();
+            //pdfTools.MergePdfs(new[]
+            //{
+            //    $"{desktopPath}/xD.pdf",
+            //    $"{desktopPath}/ReSharper_DefaultKeymap_VSscheme.pdf"
 
-            #endregion
+            //});
+
+            //var fs = new FileStream($"{desktopPath}/xD1.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            //var openpdf = PdfReader.Open(inStream, PdfDocumentOpenMode.Import);
+
+            //#endregion
 
             var excel = new ExcelService();
             excel.CreateXlsFile();

@@ -65,17 +65,21 @@
     <Compile Include="ExcelService.cs" />
     <Compile Include="IExcelService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\CD Rates.csv" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Condition=" '$(Configuration)' == 'Debug'" Include="..\FileStorage\FileStorage.csproj">
-      <Project>{bc3d5c94-c9a1-43c2-a1b9-0270d81a40de}</Project>
-      <Name>FileStorage</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
